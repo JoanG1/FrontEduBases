@@ -24,11 +24,11 @@ const ExamenesPendientesAlumno = () => {
     setPendientes([]);
 
     try {
-      /*const data = await obtenerExamenesPendientes(
+      const data = await obtenerExamenesPendientes(
         formData.matriculaAlumno,
         Number(formData.idCurso)
       );
-      setPendientes(data);*/
+      setPendientes(data || []);
     } catch (err) {
       setError("❌ Error al obtener exámenes pendientes: " + err.toString());
     }
@@ -63,11 +63,11 @@ const ExamenesPendientesAlumno = () => {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {pendientes.length > 0 && (
+      {Array.isArray(pendientes) && pendientes.length > 0 && (
         <ul>
-          {pendientes.map((examen, i) => (
-            <li key={i}>
-              {/*examen.nombre*/} - Fecha Límite: {/*examen.fechaLimite*/}
+          {pendientes.map((examen) => (
+            <li key={examen.id_examen}>
+              <strong>{examen.nombre}</strong> | Tema: {examen.tema} | Inicio: {examen.fecha_hora_inicio} | Tiempo máx: {examen.tiempo_max} min
             </li>
           ))}
         </ul>
