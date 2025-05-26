@@ -47,10 +47,10 @@ const FormularioExamen = () => {
         id_grupo: Number(formData.id_grupo),
       };
 
-      //const resultado = await crearExamen(examen);
-      //setMensaje("✅ Examen creado exitosamente");
+      const respuesta = await crearExamen(examen);
+      setMensaje(`✅ ${respuesta}`);
     } catch (err) {
-      setError("❌ Ocurrió un error al crear el examen: " + err.toString());
+      setError(`❌ Ocurrió un error al crear el examen: ${err}`);
     }
   };
 
