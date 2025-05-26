@@ -213,3 +213,16 @@ export const obtenerExamenesHechos = async (idAlumno, idGrupo) => {
   }
 };
 
+export const getCursosAlumno = async (id, rol) => {
+  try {
+    const response = await api.get(`/api/estudiante/cursos/${id}/${rol}`);
+    return response.data; // Se espera: MensajeDTO<List<CursoDTO>>
+  } catch (error) {
+    if (error.response) {
+      return error.response.data;
+    } else {
+      return { error: true, mensaje: "Error de red", data: [] };
+    }
+  }
+};
+

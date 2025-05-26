@@ -18,8 +18,8 @@ const ExamenesHechosAlumno = () => {
     }));
   };
 
-  const cargarExamenes = async (e) => {
-    e.preventDefault();
+  const cargarExamenes = async (event) => {
+    event.preventDefault();
     setError("");
     setExamenes([]);
 
