@@ -1,4 +1,3 @@
-// components/CursosUsuario.jsx
 import React, { useState } from 'react';
 import { getCursos } from '../services/ApiServices';
 
@@ -6,10 +5,19 @@ const CursosUsuario = () => {
   const [id, setId] = useState('');
   const [rol, setRol] = useState('');
   const [cursos, setCursos] = useState([]);
+  const [mensaje, setMensaje] = useState('');
 
-  const handleBuscarCursos = async () => {
+  const handleBuscarCursos = async (e) => {
+    e.preventDefault(); // Prevenir recarga
     const response = await getCursos(id, rol);
-    setCursos(response.data.respuesta || []);
+
+    if (!response.error) {
+      setCursos(response.respuesta || []);
+      setMensaje('');
+    } else {
+      setCursos([]);
+      setMensaje(response.mensajeError || 'Error al obtener los cursos.');
+    }
   };
 
   return (
@@ -33,17 +41,21 @@ const CursosUsuario = () => {
         <button type="submit">Buscar Cursos</button>
       </form>
 
+      {mensaje && (
+        <p style={{ marginTop: '1rem', color: 'red' }}>{mensaje}</p>
+      )}
+
       {cursos.length > 0 ? (
         <ul style={{ marginTop: '1rem' }}>
           {cursos.map((curso, index) => (
             <li key={index}>
-              <strong>{curso.nombre_curso ||"Curso sin nombre"}</strong>
-              {curso.id_grupo && <> (Código: {curso.nombre_grupo})</>}
+              <strong>{curso.nombre_curso || 'Curso sin nombre'}</strong>
+              {curso.nombre_grupo && <> (Grupo: {curso.nombre_grupo})</>}
             </li>
           ))}
         </ul>
       ) : (
-        <p style={{ marginTop: '1rem' }}>No hay cursos para mostrar.</p>
+        !mensaje && <p style={{ marginTop: '1rem' }}>No hay cursos para mostrar.</p>
       )}
     </div>
   );
