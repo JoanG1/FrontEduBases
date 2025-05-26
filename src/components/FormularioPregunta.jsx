@@ -35,10 +35,10 @@ const FormularioPregunta = () => {
         idDocente: Number(formData.idDocente),
       };
 
-      //const resultado = await crearPregunta(pregunta);
-      //setMensaje("✅ Pregunta creada exitosamente");
+      const respuesta = await crearPregunta(pregunta);
+      setMensaje(`✅ ${respuesta}`);
     } catch (err) {
-      setError("❌ Error al crear la pregunta: " + err.toString());
+      setError(`❌ Error al crear la pregunta: ${err}`);
     }
   };
 

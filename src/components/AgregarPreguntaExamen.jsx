@@ -35,10 +35,10 @@ const AgregarPreguntaExamen = () => {
         idExamen: Number(formData.idExamen),
       };
 
-      //const respuesta = await agregarPreguntaExamen(dto);
-      //setMensaje("Pregunta agregada correctamente ✅");
+      const respuesta = await agregarPreguntaExamen(dto);
+      setMensaje(`✅ ${respuesta}`);
     } catch (err) {
-      setError("Error al agregar pregunta: " + err.toString());
+      setError(`❌ Error al agregar pregunta: ${err}`);
     }
   };
 
