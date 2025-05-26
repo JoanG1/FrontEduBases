@@ -167,9 +167,9 @@ export const guardarPregunta = async (preguntaData) => {
   }
 };
 
-export const obtenerNota = async (idPresentacion) => {
+export const obtenerNota = async (data) => {
   try {
-    const response = await api.post('/api/estudiante/obtener-nota', idPresentacion);
+    const response = await api.post('/api/estudiante/obtener-nota', data);
     return response.data; // Se espera: MensajeDTO<Float>
   } catch (error) {
     if (error.response) {
