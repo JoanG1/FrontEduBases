@@ -16,7 +16,7 @@ const api = axios.create({
 
 export const crearRespuesta = async (data) => {
   try {
-    const response = await api.post("/crearRespuesta", data);
+    const response = await api.post("/api/docente/crearRespuesta", data);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al crear respuesta:", error);
@@ -26,7 +26,7 @@ export const crearRespuesta = async (data) => {
 
 export const crearExamen = async (examen) => {
   try {
-    const response = await api.post("/crearExamen", examen);
+    const response = await api.post("/api/docente/crearExamen", examen);
     return response.data.respuesta; // Ajusta según cómo devuelva el backend
   } catch (error) {
     console.error("Error al crear el examen:", error);
@@ -36,7 +36,7 @@ export const crearExamen = async (examen) => {
 
 export const crearPregunta = async (pregunta) => {
   try {
-    const response = await api.post("/crearPregunta", pregunta);
+    const response = await api.post("/api/docente/crearPregunta", pregunta);
     return response.data.respuesta; // El backend devuelve el mensaje aquí
   } catch (error) {
     console.error("Error al crear la pregunta:", error);
@@ -46,7 +46,7 @@ export const crearPregunta = async (pregunta) => {
 
 export const agregarPreguntaExamen = async (preguntaExamenDto) => {
   try {
-    const response = await api.post("/agregar-pregunta-examen", preguntaExamenDto);
+    const response = await api.post("/api/docente/agregar-pregunta-examen", preguntaExamenDto);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al agregar pregunta al examen:", error);
@@ -56,7 +56,7 @@ export const agregarPreguntaExamen = async (preguntaExamenDto) => {
 
 export const calificarExamen = async (datos) => {
   try {
-    const response = await api.post("/calificarExamen", datos);
+    const response = await api.post("/api/docente/calificarExamen", datos);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al calificar el examen:", error);
@@ -66,7 +66,7 @@ export const calificarExamen = async (datos) => {
 
 export const obtenerPreguntasDocente = async (idDocente) => {
   try {
-    const response = await api.post("/obtenerPreguntasDocente", idDocente);
+    const response = await api.post("/api/docente/obtenerPreguntasDocente", idDocente);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al obtener las preguntas del docente:", error);
@@ -76,7 +76,7 @@ export const obtenerPreguntasDocente = async (idDocente) => {
 
 export const obtenerExamenesDocente = async (idDocente) => {
   try {
-    const response = await api.post("/obtenerExamenesDocente", idDocente);
+    const response = await api.post("/api/docente/obtenerExamenesDocente", idDocente);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al obtener exámenes del docente:", error);
@@ -100,7 +100,7 @@ export const login = async (loginData) => {
 
 export const getNombre = async (id, rol) => {
   try {
-    const response = await api.get(`/nombre/${id}/${rol}`);
+    const response = await api.get(`/api/docente/nombre/${id}/${rol}`);
     return response.data; // Se espera: MensajeDTO<String>
   } catch (error) {
     if (error.response) {
@@ -113,7 +113,7 @@ export const getNombre = async (id, rol) => {
 
 export const getCursos = async (id, rol) => {
   try {
-    const response = await api.get(`/cursos/${id}/${rol}`);
+    const response = await api.get(`/api/docente/cursos/${id}/${rol}`);
     return response.data; // Se espera: MensajeDTO<List<CursoDTO>>
   } catch (error) {
     if (error.response) {
@@ -126,7 +126,7 @@ export const getCursos = async (id, rol) => {
 
 export const getTemasCurso = async (idCurso) => {
   try {
-    const response = await api.get(`/temasCurso/${idCurso}`);
+    const response = await api.get(`/api/docente/temasCurso/${idCurso}`);
     return response.data; // Se espera: MensajeDTO<List<TemasCursoDTO>>
   } catch (error) {
     if (error.response) {
@@ -139,7 +139,7 @@ export const getTemasCurso = async (idCurso) => {
 
 export const getAllTemas = async () => {
   try {
-    const response = await api.get('/allTemas');
+    const response = await api.get('/api/docente/allTemas');
     return response.data; // Se espera: MensajeDTO<List<TemasCursoDTO>>
   } catch (error) {
     if (error.response) {
@@ -156,7 +156,7 @@ export const getAllTemas = async () => {
 
 export const guardarPregunta = async (preguntaData) => {
   try {
-    const response = await api.post('/guardar-pregunta', preguntaData);
+    const response = await api.post('/api/estudiante/guardar-pregunta', preguntaData);
     return response.data; // Se espera: MensajeDTO<String>
   } catch (error) {
     if (error.response) {
@@ -169,7 +169,7 @@ export const guardarPregunta = async (preguntaData) => {
 
 export const obtenerNota = async (idPresentacion) => {
   try {
-    const response = await api.post('/obtener-nota', idPresentacion);
+    const response = await api.post('/api/estudiante/obtener-nota', idPresentacion);
     return response.data; // Se espera: MensajeDTO<Float>
   } catch (error) {
     if (error.response) {
@@ -182,7 +182,7 @@ export const obtenerNota = async (idPresentacion) => {
 
 export const presentarExamen = async (presentacionData) => {
   try {
-    const response = await api.post('/presentar-examen', presentacionData);
+    const response = await api.post('/api/estudiante/presentar-examen', presentacionData);
     return response.data; // Se espera: MensajeDTO<String>
   } catch (error) {
     if (error.response) {
@@ -195,7 +195,7 @@ export const presentarExamen = async (presentacionData) => {
 
 export const obtenerExamenesPendientes = async (idAlumno, idGrupo) => {
   try {
-    const response = await api.get(`/examenes-pendientes/${idAlumno}/${idGrupo}`);
+    const response = await api.get(`/api/estudiante/examenes-pendientes/${idAlumno}/${idGrupo}`);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al obtener exámenes pendientes:", error);
@@ -205,7 +205,7 @@ export const obtenerExamenesPendientes = async (idAlumno, idGrupo) => {
 
 export const obtenerExamenesHechos = async (idAlumno, idGrupo) => {
   try {
-    const response = await api.get(`/examenes-hechos/${idAlumno}/${idGrupo}`);
+    const response = await api.get(`/api/estudiante/examenes-hechos/${idAlumno}/${idGrupo}`);
     return response.data.respuesta;
   } catch (error) {
     console.error("Error al obtener exámenes hechos:", error);
