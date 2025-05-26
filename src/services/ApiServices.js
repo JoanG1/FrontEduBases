@@ -87,7 +87,7 @@ export const obtenerExamenesDocente = async (idDocente) => {
 // Servicio: Login
 export const login = async (loginData) => {
   try {
-    const response = await api.post("/login", loginData);
+    const response = await api.post("/api/auth/login", loginData);
     return response.data; // Se espera: MensajeDTO<Boolean>
   } catch (error) {
     if (error.response) {

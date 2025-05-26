@@ -7,10 +7,9 @@ const CursosUsuario = () => {
   const [rol, setRol] = useState('');
   const [cursos, setCursos] = useState([]);
 
-  const handleBuscarCursos = async (e) => {
-    e.preventDefault();
-    //const response = await getCursos(id, rol);
-    //setCursos(response.data || []);
+  const handleBuscarCursos = async () => {
+    const response = await getCursos(id, rol);
+    setCursos(response.data.respuesta || []);
   };
 
   return (
@@ -38,8 +37,8 @@ const CursosUsuario = () => {
         <ul style={{ marginTop: '1rem' }}>
           {cursos.map((curso, index) => (
             <li key={index}>
-              <strong>{/*curso.nombre ||*/ "Curso sin nombre"}</strong>
-              {/*curso.codigo && <> (Código: {curso.codigo})</>*/}
+              <strong>{curso.nombre_curso ||"Curso sin nombre"}</strong>
+              {curso.id_grupo && <> (Código: {curso.nombre_grupo})</>}
             </li>
           ))}
         </ul>

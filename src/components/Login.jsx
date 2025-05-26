@@ -7,11 +7,25 @@ const LoginForm = () => {
   const [rol, setRol] = useState('');
   const [mensaje, setMensaje] = useState(null);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    const loginDTO = { id, rol };
-    //const response = await login(loginDTO);
-    //setMensaje(response.mensaje || 'Respuesta inesperada');
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const loginDTO = { id, rol };
+      const response = await login(loginDTO);
+
+      // Extraer mensaje del backend / Extract message from backend
+      if (response.error === false && response.respuesta === true) {
+        setMensaje(response.mensajeError); // Usuario correcto / Correct user
+      } else {
+        setMensaje('Acceso denegado'); // En caso de fallo / If login fails
+      }
+
+      console.log(response); // Mostrar respuesta completa / Log full response
+    } catch (error) {
+      setMensaje('Error en la conexión');
+      console.error('Error al iniciar sesión:', error);
+    }
   };
 
   return (

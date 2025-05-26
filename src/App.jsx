@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./components/Login.jsx";
 import Dashboard from "./components/Dashboard"; // importa el nuevo componente
 import DashboardAlumno from "./components/DashboardAlumno";
 
