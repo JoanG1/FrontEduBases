@@ -1,11 +1,13 @@
 // components/LoginForm.jsx
 import React, { useState } from 'react';
 import { login } from '../services/ApiServices';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [id, setId] = useState('');
   const [rol, setRol] = useState('');
   const [mensaje, setMensaje] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -17,6 +19,11 @@ const LoginForm = () => {
       // Extraer mensaje del backend / Extract message from backend
       if (response.error === false && response.respuesta === true) {
         setMensaje(response.mensajeError); // Usuario correcto / Correct user
+        if(rol == "alumno"){
+          navigate("/dashboard-Alumno")
+        }else{
+          navigate("/dashboard")
+        }
       } else {
         setMensaje('Acceso denegado'); // En caso de fallo / If login fails
       }
