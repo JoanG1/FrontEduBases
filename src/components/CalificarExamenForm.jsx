@@ -29,10 +29,11 @@ const CalificarExamenForm = () => {
         calificacion: Number(formData.calificacion),
       };
 
-      //const resultado = await calificarExamen(data);
-      //setMensaje(`✅ Examen calificado - ID: ${data.idPresentacionExamen}, Calificación: ${data.calificacion}`);
+      const respuesta = await calificarExamen(data);
+
+      setMensaje(`✅ ${respuesta}`);
     } catch (err) {
-      setError("❌ No se pudo calificar el examen: " + err.toString());
+      setError(`❌ No se pudo calificar el examen: ${err}`);
     }
   };
 
