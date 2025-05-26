@@ -24,11 +24,11 @@ const ExamenesHechosAlumno = () => {
     setExamenes([]);
 
     try {
-      /*const data = await obtenerExamenesHechos(
+      const data = await obtenerExamenesHechos(
         formData.matriculaAlumno,
         Number(formData.idCurso)
       );
-      setExamenes(data);*/
+      setExamenes(data || []);
     } catch (err) {
       setError("❌ Error al obtener exámenes: " + err.toString());
     }
@@ -63,14 +63,13 @@ const ExamenesHechosAlumno = () => {
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {examenes.length > 0 && (
+      {Array.isArray(examenes) && examenes.length > 0 && (
         <ul>
           {examenes.map((examen, i) => (
             <li key={i}>
-              {/*examen.nombreExamen*/} - Calificación: {/*examen.calificacion*/}
+              {examen.nombreExamen} - Calificación: {examen.calificacion}
             </li>
           ))}
-          <li>Mate 1 - 4.5</li>
         </ul>
       )}
     </div>
