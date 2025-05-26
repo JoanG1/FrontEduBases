@@ -1,4 +1,3 @@
-// components/FormPresentacionExamen.jsx
 import React, { useState } from 'react';
 import { presentarExamen } from '../services/ApiServices';
 
@@ -12,6 +11,7 @@ const FormPresentacionExamen = () => {
     idAlumno: '',
   });
   const [mensaje, setMensaje] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setPresentacion({ ...presentacion, [e.target.name]: e.target.value });
@@ -19,6 +19,8 @@ const FormPresentacionExamen = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje(null);
+    setError(null);
 
     const presentacionDTO = {
       ...presentacion,
@@ -29,8 +31,16 @@ const FormPresentacionExamen = () => {
       fechaHoraPresentacion: new Date(presentacion.fechaHoraPresentacion),
     };
 
-    //const response = await presentarExamen(presentacionDTO);
-    //setMensaje(response.data || response.mensaje);
+    try {
+      const response = await presentarExamen(presentacionDTO);
+      if (!response.error) {
+        setMensaje(`✅ ${response.respuesta}`);
+      } else {
+        setError(`❌ ${response.mensajeError}`);
+      }
+    } catch (err) {
+      setError(`❌ Error inesperado al presentar el examen`);
+    }
   };
 
   return (
@@ -84,7 +94,8 @@ const FormPresentacionExamen = () => {
         <button type="submit">Enviar</button>
       </form>
 
-      {mensaje && <p style={{ marginTop: '1rem' }}>{mensaje}</p>}
+      {mensaje && <p style={{ color: 'green', marginTop: '1rem' }}>{mensaje}</p>}
+      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
     </div>
   );
 };
