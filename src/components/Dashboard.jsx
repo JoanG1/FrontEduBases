@@ -1,11 +1,10 @@
-// src/components/Dashboard.jsx
 import React from "react";
 import {
   Typography,
   Box,
   Container,
   Paper,
-  Divider
+  Divider,
 } from "@mui/material";
 import FormularioRespuesta from "./FormularioRespuesta";
 import FormularioExamen from "./FormularioExamen";
@@ -31,57 +30,69 @@ const Section = ({ title, children }) => (
 
 const Dashboard = () => {
   return (
-    <Container maxWidth="md">
-      <Box sx={{ mt: 8 }}>
-        <Typography variant="h3" gutterBottom sx={{ mb: 4, textAlign: "center" }}>
-          Bienvenido al Panel Profesor
-        </Typography>
+    <Box
+      sx={{
+        backgroundColor: "#1565c0", // azul oscuro
+        minHeight: "100vh",
+        py: 4,
+      }}
+    >
+      <Container maxWidth="md">
+        <Box sx={{ mt: 4 }}>
+          <Typography
+            variant="h3"
+            gutterBottom
+            sx={{ mb: 4, textAlign: "center", color: "white" }}
+          >
+            Bienvenido al Panel Profesor
+          </Typography>
 
-        <Section title="Formulario Respuesta">
-          <FormularioRespuesta />
-        </Section>
+          <Section title="Formulario Respuesta">
+            <FormularioRespuesta />
+          </Section>
 
-        <Section title="Formulario Examen">
-          <FormularioExamen />
-        </Section>
+          <Section title="Formulario Examen">
+            <FormularioExamen />
+          </Section>
 
-        <Section title="Formulario Pregunta">
-          <FormularioPregunta />
-        </Section>
+          <Section title="Formulario Pregunta">
+            <FormularioPregunta />
+          </Section>
 
-        <Section title="Agregar Pregunta al Examen">
-          <AgregarPreguntaExamen />
-        </Section>
+          <Section title="Agregar Pregunta al Examen">
+            <AgregarPreguntaExamen />
+          </Section>
 
-        <Section title="Calificar Examen">
-          <CalificarExamenForm />
-        </Section>
+          <Section title="Calificar Examen">
+            <CalificarExamenForm />
+          </Section>
 
-        <Section title="Listar Preguntas del Docente">
-          <ListaPreguntasDocente />
-        </Section>
+          <Section title="Listar Preguntas del Docente">
+            <ListaPreguntasDocente />
+          </Section>
 
-        <Section title="Exámenes del Docente">
-          <ListaExamenesDocente />
-        </Section>
+          <Section title="Exámenes del Docente">
+            <ListaExamenesDocente />
+          </Section>
 
-        <Section title="Buscar Nombre del Docente">
-          <NombreUsuario />
-        </Section>
+          <Section title="Buscar Nombre del Docente">
+            <NombreUsuario />
+          </Section>
 
-        <Section title="Conseguir Cursos">
-          <CursosUsuario />
-        </Section>
+          <Section title="Conseguir Cursos">
+            <CursosUsuario />
+          </Section>
 
-        <Section title="Temas del Curso">
-          <TemasCurso />
-        </Section>
+          <Section title="Temas del Curso">
+            <TemasCurso />
+          </Section>
 
-        <Section title="Temas del Docente">
-          <TemasDocente />
-        </Section>
-      </Box>
-    </Container>
+          <Section title="Temas del Docente">
+            <TemasDocente />
+          </Section>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
