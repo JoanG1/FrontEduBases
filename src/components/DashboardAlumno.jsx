@@ -12,6 +12,7 @@ import FormPresentacionExamen from "./FormPresentacionExamen";
 import ExamenesPendientesAlumno from "./ExamenesPendientesAlumno";
 import ExamenesHechosAlumno from "./ExamenesHechosAlumno";
 import CursosAlumno from "./CursosAlumno";
+import FormRespuestaTexto from "./FormRespuestaTexto"; // ✅ NUEVO IMPORT
 
 const Section = ({ title, children }) => (
   <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
@@ -58,6 +59,10 @@ const DashboardAlumno = () => {
             <FormPresentacionExamen />
           </Section>
 
+          <Section title="Registrar Respuesta de Texto">
+            <FormRespuestaTexto /> {/* ✅ NUEVA SECCIÓN */}
+          </Section>
+
           <Section title="Exámenes Pendientes">
             <ExamenesPendientesAlumno />
           </Section>
@@ -72,3 +77,4 @@ const DashboardAlumno = () => {
 };
 
 export default DashboardAlumno;
+

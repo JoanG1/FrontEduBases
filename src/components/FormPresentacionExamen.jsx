@@ -10,6 +10,10 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
 } from "@mui/material";
 import { presentarExamen } from "../services/ApiServices";
 
@@ -25,6 +29,7 @@ const FormPresentacionExamen = () => {
 
   const [mensaje, setMensaje] = useState(null);
   const [error, setError] = useState(null);
+  const [preguntas, setPreguntas] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,6 +43,7 @@ const FormPresentacionExamen = () => {
     e.preventDefault();
     setMensaje(null);
     setError(null);
+    setPreguntas([]);
 
     const presentacionDTO = {
       ...presentacion,
@@ -51,7 +57,8 @@ const FormPresentacionExamen = () => {
     try {
       const response = await presentarExamen(presentacionDTO);
       if (!response.error) {
-        setMensaje(`✅ ${response.respuesta}`);
+        setMensaje(`✅ ${response.mensajeError}`);
+        setPreguntas(response.respuesta || []);
       } else {
         setError(`❌ ${response.mensajeError}`);
       }
@@ -158,6 +165,33 @@ const FormPresentacionExamen = () => {
         <Alert severity="error" sx={{ mt: 2 }}>
           {error}
         </Alert>
+      )}
+
+      {preguntas.length > 0 && (
+        <Box mt={4}>
+          <Typography variant="h6">Preguntas del examen:</Typography>
+          <List>
+            {preguntas.map((pregunta) => (
+              <Box key={pregunta.idPregunta}>
+                <ListItem>
+                  <ListItemText
+                    primary={`(${pregunta.tipoPregunta}) ${pregunta.enunciado}`}
+                  />
+                </ListItem>
+                {pregunta.respuestas && pregunta.respuestas.length > 0 && (
+                  <List component="div" disablePadding sx={{ pl: 4 }}>
+                    {pregunta.respuestas.map((r) => (
+                      <ListItem key={r.idRespuesta}>
+                        <ListItemText primary={`• ${r.descripcion}`} />
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
+                <Divider />
+              </Box>
+            ))}
+          </List>
+        </Box>
       )}
     </Paper>
   );

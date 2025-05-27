@@ -17,6 +17,7 @@ import CursosUsuario from "./CursosUsuario";
 import TemasCurso from "./TemasCurso";
 import TemasDocente from "./TemasDocente";
 import AgregarPreguntaExamen from "./AgregarPreguntaExamen";
+import VerRespuestasEstudiante from "./VerRespuestasEstudiante";
 
 const Section = ({ title, children }) => (
   <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
@@ -63,6 +64,10 @@ const Dashboard = () => {
             <AgregarPreguntaExamen />
           </Section>
 
+          <Section title="Ver Respuestas del Estudiante">
+            <VerRespuestasEstudiante />
+          </Section>
+
           <Section title="Calificar Examen">
             <CalificarExamenForm />
           </Section>
@@ -90,6 +95,7 @@ const Dashboard = () => {
           <Section title="Temas del Docente">
             <TemasDocente />
           </Section>
+
         </Box>
       </Container>
     </Box>

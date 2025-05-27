@@ -226,3 +226,29 @@ export const getCursosAlumno = async (id, rol) => {
   }
 };
 
+export const registrarRespuestaTexto = async (respuestaData) => {
+  try {
+    const response = await api.post("/api/estudiante/registrar-respuesta", respuestaData);
+    return response.data; // Se espera: MensajeDTO<String>
+  } catch (error) {
+    if (error.response) {
+      return error.response.data;
+    } else {
+      return { error: true, mensaje: "Error de red", data: null };
+    }
+  }
+};
+
+export const verRespuestasEstudiante = async (idExamen, idAlumno) => {
+  try {
+    const response = await api.get(`/api/docente/ver-respuestas/${idExamen}/${idAlumno}`);
+    return response.data; // MensajeDTO<List<RespuestaEstudianteConsultaDto>>
+  } catch (error) {
+    if (error.response) {
+      return error.response.data;
+    } else {
+      return { error: true, mensaje: "Error de red", data: [] };
+    }
+  }
+};
+
