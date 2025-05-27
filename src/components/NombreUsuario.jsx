@@ -1,51 +1,81 @@
-import React, { useState } from 'react';
-import { getNombre } from '../services/ApiServices';
+import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+} from "@mui/material";
+import { getNombre } from "../services/ApiServices";
 
 const NombreUsuario = () => {
-  const [id, setId] = useState('');
-  const [rol, setRol] = useState('');
+  const [id, setId] = useState("");
+  const [rol] = useState("docente"); // Valor fijo
   const [nombre, setNombre] = useState(null);
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje] = useState("");
 
   const handleBuscarNombre = async (e) => {
     e.preventDefault();
-    const response = await getNombre(id, rol);
-
-    if (!response.error) {
-      setNombre(response.respuesta || 'Nombre no disponible');
-      setMensaje('');
-    } else {
+    try {
+      const response = await getNombre(id, rol);
+      if (!response.error) {
+        setNombre(response.respuesta || "Nombre no disponible");
+        setMensaje("");
+      } else {
+        setNombre(null);
+        setMensaje(response.mensajeError || "Error al buscar el nombre");
+      }
+    } catch (err) {
       setNombre(null);
-      setMensaje(response.mensajeError || 'Error al buscar el nombre');
+      setMensaje("❌ Error en la solicitud");
     }
   };
 
   return (
-    <div style={{ maxWidth: '300px', margin: '2rem auto' }}>
-      <h2>Buscar Nombre de Docente</h2>
-      <form onSubmit={handleBuscarNombre}>
-        <input
-          type="text"
-          placeholder="ID"
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 400,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" align="center" gutterBottom>
+        Buscar Nombre de Docente
+      </Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleBuscarNombre}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          label="ID del Docente"
           value={id}
           onChange={(e) => setId(e.target.value)}
           required
-          style={{ marginBottom: '0.5rem', width: '100%' }}
+          fullWidth
         />
-        <input
-          type="text"
-          placeholder="Rol"
-          value={"docente"}
-          onChange={(e) => setRol(e.target.value)}
-          required
-          style={{ marginBottom: '0.5rem', width: '100%' }}
-        />
-        <button type="submit" style={{ width: '100%' }}>Buscar</button>
-      </form>
 
-      {mensaje && <p style={{ color: 'red', marginTop: '1rem' }}>{mensaje}</p>}
-      {nombre && <p style={{ marginTop: '1rem' }}><strong>Nombre:</strong> {nombre}</p>}
-    </div>
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Buscar
+        </Button>
+      </Box>
+
+      {mensaje && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {mensaje}
+        </Alert>
+      )}
+
+      {nombre && (
+        <Alert severity="success" sx={{ mt: 2 }}>
+          <strong>Nombre:</strong> {nombre}
+        </Alert>
+      )}
+    </Paper>
   );
 };
 

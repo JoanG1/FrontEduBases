@@ -1,6 +1,12 @@
-// src/components/Dashboard.jsx
+// src/components/DashboardAlumno.jsx
 import React from "react";
-import { Typography, Box, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Container,
+  Paper,
+  Divider
+} from "@mui/material";
 import FormPregunta from "./FormPregunta";
 import NotaPresentacion from "./NotaPresentacion";
 import FormPresentacionExamen from "./FormPresentacionExamen";
@@ -8,27 +14,48 @@ import ExamenesPendientesAlumno from "./ExamenesPendientesAlumno";
 import ExamenesHechosAlumno from "./ExamenesHechosAlumno";
 import CursosAlumno from "./CursosAlumno";
 
+// Componente reutilizable de sección
+const Section = ({ title, children }) => (
+  <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+    <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
+      {title}
+    </Typography>
+    <Divider sx={{ mb: 2 }} />
+    {children}
+  </Paper>
+);
 
 const DashboardAlumno = () => {
   return (
     <Container maxWidth="md">
       <Box sx={{ mt: 8 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" gutterBottom sx={{ mb: 4, textAlign: "center" }}>
           Bienvenido al Panel Alumno
         </Typography>
-        <h1>Guardar pregunta</h1>
-        <FormPregunta/>
-        <h1>Obtener Nota</h1>
-        <NotaPresentacion/>
-        <h1>Obtener Cursos</h1>
-        <CursosAlumno/>
-        <h1>Presentacion Examen</h1>
-        <FormPresentacionExamen/>
-        <h1>Examen Pendientes</h1>
-        <ExamenesPendientesAlumno/>
-        <h1>Examen Hechos</h1>
-        <ExamenesHechosAlumno/>
 
+        <Section title="Guardar Pregunta">
+          <FormPregunta />
+        </Section>
+
+        <Section title="Obtener Nota de Presentación">
+          <NotaPresentacion />
+        </Section>
+
+        <Section title="Obtener Cursos">
+          <CursosAlumno />
+        </Section>
+
+        <Section title="Presentación de Examen">
+          <FormPresentacionExamen />
+        </Section>
+
+        <Section title="Exámenes Pendientes">
+          <ExamenesPendientesAlumno />
+        </Section>
+
+        <Section title="Exámenes Realizados">
+          <ExamenesHechosAlumno />
+        </Section>
       </Box>
     </Container>
   );

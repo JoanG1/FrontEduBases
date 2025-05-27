@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import { calificarExamen } from "../services/ApiServices";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  Paper,
+} from "@mui/material";
 
 const CalificarExamenForm = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +38,6 @@ const CalificarExamenForm = () => {
       };
 
       const respuesta = await calificarExamen(data);
-
       setMensaje(`✅ ${respuesta}`);
     } catch (err) {
       setError(`❌ No se pudo calificar el examen: ${err}`);
@@ -38,34 +45,57 @@ const CalificarExamenForm = () => {
   };
 
   return (
-    <div>
-      <h3>Formulario de Calificación de Examen</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>ID Presentación Examen:</label>
-          <input
-            type="number"
-            name="idPresentacionExamen"
-            value={formData.idPresentacionExamen}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Calificación:</label>
-          <input
-            type="number"
-            name="calificacion"
-            value={formData.calificacion}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Calificar</button>
-      </form>
-      {mensaje && <p style={{ color: "green" }}>{mensaje}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 500,
+        margin: "40px auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" align="center" gutterBottom>
+        Formulario de Calificación de Examen
+      </Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+      >
+        <TextField
+          label="ID Presentación Examen"
+          type="number"
+          name="idPresentacionExamen"
+          value={formData.idPresentacionExamen}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Calificación"
+          type="number"
+          name="calificacion"
+          value={formData.calificacion}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          sx={{ padding: "10px", fontWeight: "bold" }}
+        >
+          Calificar
+        </Button>
+
+        {mensaje && <Alert severity="success">{mensaje}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
+      </Box>
+    </Paper>
   );
 };
 

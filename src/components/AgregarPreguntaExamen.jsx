@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Button,
+  Typography,
+  Alert,
+  Paper,
+} from "@mui/material";
 import { agregarPreguntaExamen } from "../services/ApiServices";
 
 const AgregarPreguntaExamen = () => {
@@ -15,10 +27,7 @@ const AgregarPreguntaExamen = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAgregar = async (e) => {
@@ -38,70 +47,87 @@ const AgregarPreguntaExamen = () => {
       const respuesta = await agregarPreguntaExamen(dto);
       setMensaje(`✅ ${respuesta}`);
     } catch (err) {
-      setError(`❌ Error al agregar pregunta: ${err}`);
+      setError(`❌ Error al agregar pregunta: ${err.message || err}`);
     }
   };
 
   return (
-    <div>
-      <h3>Agregar Pregunta al Examen</h3>
-      <form onSubmit={handleAgregar}>
-        <div>
-          <label>Porcentaje Examen:</label>
-          <input
-            type="number"
-            name="porcentajeExamen"
-            value={formData.porcentajeExamen}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Tiempo Pregunta (segundos):</label>
-          <input
-            type="number"
-            name="tiempoPregunta"
-            value={formData.tiempoPregunta}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Tiene Tiempo Máximo (S/N):</label>
-          <select
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Agregar Pregunta al Examen
+      </Typography>
+
+      <Box component="form" onSubmit={handleAgregar} sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+        <TextField
+          label="Porcentaje del Examen"
+          name="porcentajeExamen"
+          type="number"
+          value={formData.porcentajeExamen}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Tiempo de la Pregunta (segundos)"
+          name="tiempoPregunta"
+          type="number"
+          value={formData.tiempoPregunta}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <FormControl fullWidth required>
+          <InputLabel id="tieneTiempoMaximo-label">¿Tiene Tiempo Máximo?</InputLabel>
+          <Select
+            labelId="tieneTiempoMaximo-label"
             name="tieneTiempoMaximo"
             value={formData.tieneTiempoMaximo}
             onChange={handleChange}
+            label="¿Tiene Tiempo Máximo?"
           >
-            <option value="S">Sí</option>
-            <option value="N">No</option>
-          </select>
-        </div>
-        <div>
-          <label>ID Pregunta:</label>
-          <input
-            type="number"
-            name="idPregunta"
-            value={formData.idPregunta}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>ID Examen:</label>
-          <input
-            type="number"
-            name="idExamen"
-            value={formData.idExamen}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Agregar</button>
-      </form>
-      {mensaje && <p style={{ color: "green" }}>{mensaje}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+            <MenuItem value="S">Sí</MenuItem>
+            <MenuItem value="N">No</MenuItem>
+          </Select>
+        </FormControl>
+
+        <TextField
+          label="ID de la Pregunta"
+          name="idPregunta"
+          type="number"
+          value={formData.idPregunta}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="ID del Examen"
+          name="idExamen"
+          type="number"
+          value={formData.idExamen}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1 }}>
+          Agregar Pregunta
+        </Button>
+
+        {mensaje && <Alert severity="success">{mensaje}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
+      </Box>
+    </Paper>
   );
 };
 

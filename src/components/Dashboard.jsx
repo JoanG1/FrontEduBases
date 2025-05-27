@@ -1,6 +1,12 @@
 // src/components/Dashboard.jsx
 import React from "react";
-import { Typography, Box, Container } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Container,
+  Paper,
+  Divider
+} from "@mui/material";
 import FormularioRespuesta from "./FormularioRespuesta";
 import FormularioExamen from "./FormularioExamen";
 import FormularioPregunta from "./FormularioPregunta";
@@ -13,36 +19,67 @@ import TemasCurso from "./TemasCurso";
 import TemasDocente from "./TemasDocente";
 import AgregarPreguntaExamen from "./AgregarPreguntaExamen";
 
+const Section = ({ title, children }) => (
+  <Paper elevation={3} sx={{ p: 3, mb: 4 }}>
+    <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold" }}>
+      {title}
+    </Typography>
+    <Divider sx={{ mb: 2 }} />
+    {children}
+  </Paper>
+);
+
 const Dashboard = () => {
   return (
     <Container maxWidth="md">
       <Box sx={{ mt: 8 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" gutterBottom sx={{ mb: 4, textAlign: "center" }}>
           Bienvenido al Panel Profesor
         </Typography>
-        <h1>Formulario respuesta</h1>
-        <FormularioRespuesta/>
-        <h1>Formulario Examen</h1>
-        <FormularioExamen/>
-        <h1>Formulario Pregunta</h1>
-        <FormularioPregunta/>
-        <h1>Agregar Pregunta Examen</h1>
-        <AgregarPreguntaExamen/>
-        <h1>Calificar examen</h1>
-        <CalificarExamenForm/>
-        <h1>Listar preguntas docente</h1>
-        <ListaPreguntasDocente/>
-        <h1>Examenes del docente</h1>
-        <ListaExamenesDocente/>
-        <h1>Conseguir nombre</h1>
-        <NombreUsuario/>
-        <h1>Conseguir Cursos</h1>
-        <CursosUsuario/>
-        <h1>Temas Cursos</h1>
-        <TemasCurso/>
-        <h1>Temas Docentes</h1>
-        <TemasDocente/>
 
+        <Section title="Formulario Respuesta">
+          <FormularioRespuesta />
+        </Section>
+
+        <Section title="Formulario Examen">
+          <FormularioExamen />
+        </Section>
+
+        <Section title="Formulario Pregunta">
+          <FormularioPregunta />
+        </Section>
+
+        <Section title="Agregar Pregunta al Examen">
+          <AgregarPreguntaExamen />
+        </Section>
+
+        <Section title="Calificar Examen">
+          <CalificarExamenForm />
+        </Section>
+
+        <Section title="Listar Preguntas del Docente">
+          <ListaPreguntasDocente />
+        </Section>
+
+        <Section title="Exámenes del Docente">
+          <ListaExamenesDocente />
+        </Section>
+
+        <Section title="Buscar Nombre del Docente">
+          <NombreUsuario />
+        </Section>
+
+        <Section title="Conseguir Cursos">
+          <CursosUsuario />
+        </Section>
+
+        <Section title="Temas del Curso">
+          <TemasCurso />
+        </Section>
+
+        <Section title="Temas del Docente">
+          <TemasDocente />
+        </Section>
       </Box>
     </Container>
   );

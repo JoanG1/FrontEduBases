@@ -1,44 +1,87 @@
-import React, { useState } from 'react';
-import { getAllTemas } from '../services/ApiServices';
+import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  Button,
+  Alert,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { getAllTemas } from "../services/ApiServices";
 
 const TemasDocente = () => {
   const [temas, setTemas] = useState([]);
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje] = useState("");
 
   const handleCargarTemas = async () => {
-    const response = await getAllTemas();
+    setMensaje("");
+    setTemas([]);
 
-    if (!response.error) {
-      setTemas(response.respuesta || []);
-      setMensaje('');
-    } else {
-      setTemas([]);
-      setMensaje(response.mensajeError || 'Error al cargar los temas.');
+    try {
+      const response = await getAllTemas();
+
+      if (!response.error) {
+        setTemas(response.respuesta || []);
+      } else {
+        setMensaje(`❌ ${response.mensajeError || "Error al cargar los temas."}`);
+      }
+    } catch (err) {
+      setMensaje("❌ Error inesperado al cargar los temas.");
     }
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '2rem auto' }}>
-      <h2>Todos los Temas de los Docentes</h2>
-      <button onClick={handleCargarTemas}>Cargar Temas</button>
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" align="center" gutterBottom>
+        Todos los Temas de los Docentes
+      </Typography>
+
+      <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+        <Button variant="contained" color="primary" onClick={handleCargarTemas}>
+          Cargar Temas
+        </Button>
+      </Box>
 
       {mensaje && (
-        <p style={{ marginTop: '1rem', color: 'red' }}>{mensaje}</p>
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {mensaje}
+        </Alert>
       )}
 
-      {temas.length > 0 ? (
-        <ul style={{ marginTop: '1rem' }}>
-          {temas.map((tema) => (
-            <li key={tema.id_tema}>
-              <strong>{tema.titulo || 'Sin título'}</strong>
-              <span style={{ display: 'block', color: '#555' }}>ID: {tema.id_tema}</span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        !mensaje && <p style={{ marginTop: '1rem' }}>No hay temas cargados.</p>
+      {temas.length > 0 && (
+        <Box sx={{ mt: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            Lista de Temas
+          </Typography>
+          <List>
+            {temas.map((tema) => (
+              <ListItem key={tema.id_tema}>
+                <ListItemText
+                  primary={tema.titulo || "Sin título"}
+                  secondary={`ID: ${tema.id_tema}`}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       )}
-    </div>
+
+      {temas.length === 0 && !mensaje && (
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          No hay temas cargados.
+        </Typography>
+      )}
+    </Paper>
   );
 };
 

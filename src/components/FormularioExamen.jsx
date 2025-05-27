@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+} from "@mui/material";
 import { crearExamen } from "../services/ApiServices";
 
 const FormularioExamen = () => {
@@ -55,48 +63,152 @@ const FormularioExamen = () => {
   };
 
   return (
-    <div>
-      <h3>Formulario para Crear Examen</h3>
-      <form onSubmit={handleSubmit}>
-        <div><label>Nombre:</label>
-          <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
-        </div>
-        <div><label>Tiempo Máximo (min):</label>
-          <input type="number" name="tiempo_max" value={formData.tiempo_max} onChange={handleChange} required />
-        </div>
-        <div><label>Número de Preguntas:</label>
-          <input type="number" name="numero_preguntas" value={formData.numero_preguntas} onChange={handleChange} required />
-        </div>
-        <div><label>Porcentaje del Curso:</label>
-          <input type="number" name="porcentajeCurso" value={formData.porcentajeCurso} onChange={handleChange} required />
-        </div>
-        <div><label>Porcentaje Aprobatorio:</label>
-          <input type="number" name="porcentaje_aprobatorio" value={formData.porcentaje_aprobatorio} onChange={handleChange} required />
-        </div>
-        <div><label>Fecha y Hora de Inicio:</label>
-          <input type="datetime-local" name="fecha_hora_inicio" value={formData.fecha_hora_inicio} onChange={handleChange} required />
-        </div>
-        <div><label>Fecha y Hora de Fin:</label>
-          <input type="datetime-local" name="fecha_hora_fin" value={formData.fecha_hora_fin} onChange={handleChange} required />
-        </div>
-        <div><label>Número de Preguntas Aleatorias:</label>
-          <input type="number" name="num_preguntas_aleatorias" value={formData.num_preguntas_aleatorias} onChange={handleChange} required />
-        </div>
-        <div><label>ID Tema:</label>
-          <input type="number" name="id_tema" value={formData.id_tema} onChange={handleChange} required />
-        </div>
-        <div><label>ID Docente:</label>
-          <input type="number" name="id_docente" value={formData.id_docente} onChange={handleChange} required />
-        </div>
-        <div><label>ID Grupo:</label>
-          <input type="number" name="id_grupo" value={formData.id_grupo} onChange={handleChange} required />
-        </div>
-        <button type="submit">Crear Examen</button>
-      </form>
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Crear Examen
+      </Typography>
 
-      {mensaje && <p style={{ color: "green" }}>{mensaje}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          label="Nombre"
+          name="nombre"
+          value={formData.nombre}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Tiempo Máximo (min)"
+          name="tiempo_max"
+          type="number"
+          value={formData.tiempo_max}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Número de Preguntas"
+          name="numero_preguntas"
+          type="number"
+          value={formData.numero_preguntas}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Porcentaje del Curso"
+          name="porcentajeCurso"
+          type="number"
+          value={formData.porcentajeCurso}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Porcentaje Aprobatorio"
+          name="porcentaje_aprobatorio"
+          type="number"
+          value={formData.porcentaje_aprobatorio}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Fecha y Hora de Inicio"
+          name="fecha_hora_inicio"
+          type="datetime-local"
+          value={formData.fecha_hora_inicio}
+          onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Fecha y Hora de Fin"
+          name="fecha_hora_fin"
+          type="datetime-local"
+          value={formData.fecha_hora_fin}
+          onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="Número de Preguntas Aleatorias"
+          name="num_preguntas_aleatorias"
+          type="number"
+          value={formData.num_preguntas_aleatorias}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="ID del Tema"
+          name="id_tema"
+          type="number"
+          value={formData.id_tema}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="ID del Docente"
+          name="id_docente"
+          type="number"
+          value={formData.id_docente}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="ID del Grupo"
+          name="id_grupo"
+          type="number"
+          value={formData.id_grupo}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Crear Examen
+        </Button>
+      </Box>
+
+      {mensaje && (
+        <Alert severity="success" sx={{ mt: 2 }}>
+          {mensaje}
+        </Alert>
+      )}
+
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
+    </Paper>
   );
 };
 

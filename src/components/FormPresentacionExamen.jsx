@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
-import { presentarExamen } from '../services/ApiServices';
+import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import { presentarExamen } from "../services/ApiServices";
 
 const FormPresentacionExamen = () => {
   const [presentacion, setPresentacion] = useState({
-    tiempo: '',
-    terminado: '0',
-    ipSource: '',
-    fechaHoraPresentacion: '',
-    idExamen: '',
-    idAlumno: '',
+    tiempo: "",
+    terminado: "0",
+    ipSource: "",
+    fechaHoraPresentacion: "",
+    idExamen: "",
+    idAlumno: "",
   });
+
   const [mensaje, setMensaje] = useState(null);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
-    setPresentacion({ ...presentacion, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setPresentacion((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -25,7 +42,7 @@ const FormPresentacionExamen = () => {
     const presentacionDTO = {
       ...presentacion,
       tiempo: parseInt(presentacion.tiempo),
-      terminado: presentacion.terminado === '1' ? '1' : '0',
+      terminado: presentacion.terminado === "1" ? "1" : "0",
       idExamen: parseInt(presentacion.idExamen),
       idAlumno: parseInt(presentacion.idAlumno),
       fechaHoraPresentacion: new Date(presentacion.fechaHoraPresentacion),
@@ -44,59 +61,105 @@ const FormPresentacionExamen = () => {
   };
 
   return (
-    <div style={{ maxWidth: '500px', margin: '2rem auto' }}>
-      <h2>Presentar Examen</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="number"
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Presentar Examen
+      </Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          label="Tiempo (minutos)"
           name="tiempo"
-          placeholder="Tiempo (min)"
+          type="number"
           value={presentacion.tiempo}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <select name="terminado" value={presentacion.terminado} onChange={handleChange}>
-          <option value="0">No terminado</option>
-          <option value="1">Terminado</option>
-        </select>
-        <input
-          type="text"
+
+        <FormControl fullWidth>
+          <InputLabel id="terminado-label">Estado</InputLabel>
+          <Select
+            labelId="terminado-label"
+            name="terminado"
+            value={presentacion.terminado}
+            onChange={handleChange}
+            label="Estado"
+          >
+            <MenuItem value="0">No terminado</MenuItem>
+            <MenuItem value="1">Terminado</MenuItem>
+          </Select>
+        </FormControl>
+
+        <TextField
+          label="IP del dispositivo"
           name="ipSource"
-          placeholder="IP del dispositivo"
           value={presentacion.ipSource}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <input
-          type="datetime-local"
+
+        <TextField
+          label="Fecha y Hora"
           name="fechaHoraPresentacion"
-          placeholder="Fecha y Hora"
+          type="datetime-local"
           value={presentacion.fechaHoraPresentacion}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
           required
+          fullWidth
         />
-        <input
-          type="number"
+
+        <TextField
+          label="ID del Examen"
           name="idExamen"
-          placeholder="ID Examen"
+          type="number"
           value={presentacion.idExamen}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <input
-          type="number"
+
+        <TextField
+          label="ID del Alumno"
           name="idAlumno"
-          placeholder="ID Alumno"
+          type="number"
           value={presentacion.idAlumno}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <button type="submit">Enviar</button>
-      </form>
 
-      {mensaje && <p style={{ color: 'green', marginTop: '1rem' }}>{mensaje}</p>}
-      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
-    </div>
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Enviar Presentación
+        </Button>
+      </Box>
+
+      {mensaje && (
+        <Alert severity="success" sx={{ mt: 2 }}>
+          {mensaje}
+        </Alert>
+      )}
+
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
+    </Paper>
   );
 };
 

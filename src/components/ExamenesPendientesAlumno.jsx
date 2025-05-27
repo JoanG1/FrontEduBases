@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { obtenerExamenesPendientes } from "../services/ApiServices";
 
 const ExamenesPendientesAlumno = () => {
@@ -35,44 +47,81 @@ const ExamenesPendientesAlumno = () => {
   };
 
   return (
-    <div>
-      <h3>Exámenes Pendientes del Alumno</h3>
-      <form onSubmit={cargarPendientes}>
-        <div>
-          <label>ID del Alumno:</label>
-          <input
-            type="text"
-            name="matriculaAlumno"
-            value={formData.matriculaAlumno}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>ID del Curso:</label>
-          <input
-            type="number"
-            name="idCurso"
-            value={formData.idCurso}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Buscar Pendientes</button>
-      </form>
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Exámenes Pendientes del Alumno
+      </Typography>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <Box
+        component="form"
+        onSubmit={cargarPendientes}
+        sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          label="ID del Alumno"
+          name="matriculaAlumno"
+          value={formData.matriculaAlumno}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <TextField
+          label="ID del Curso"
+          name="idCurso"
+          type="number"
+          value={formData.idCurso}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Buscar Pendientes
+        </Button>
+      </Box>
+
+      {error && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {error}
+        </Alert>
+      )}
 
       {Array.isArray(pendientes) && pendientes.length > 0 && (
-        <ul>
-          {pendientes.map((examen) => (
-            <li key={examen.id_examen}>
-              <strong>{examen.nombre}</strong> | Tema: {examen.tema} | Inicio: {examen.fecha_hora_inicio} | Tiempo máx: {examen.tiempo_max} min
-            </li>
-          ))}
-        </ul>
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h6" gutterBottom>
+            Lista de Exámenes Pendientes:
+          </Typography>
+          <List>
+            {pendientes.map((examen) => (
+              <React.Fragment key={examen.id_examen}>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    primary={<strong>{examen.nombre}</strong>}
+                    secondary={
+                      <>
+                        Tema: {examen.tema} <br />
+                        Inicio: {examen.fecha_hora_inicio} <br />
+                        Tiempo máximo: {examen.tiempo_max} minutos
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            ))}
+          </List>
+        </Box>
       )}
-    </div>
+    </Paper>
   );
 };
 

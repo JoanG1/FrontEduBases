@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
-import { obtenerNota } from '../services/ApiServices';
+import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+} from "@mui/material";
+import { obtenerNota } from "../services/ApiServices";
 
 const NotaPresentacion = () => {
   const [formData, setFormData] = useState({
-    idPresentacion: '',
-    idAlumno: '',
+    idPresentacion: "",
+    idAlumno: "",
   });
 
   const [nota, setNota] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +29,7 @@ const NotaPresentacion = () => {
   const handleConsultarNota = async (e) => {
     e.preventDefault();
     setNota(null);
-    setError('');
+    setError("");
 
     try {
       const payload = {
@@ -34,48 +42,69 @@ const NotaPresentacion = () => {
       if (!response.error) {
         setNota(response.respuesta ?? 0.0);
       } else {
-        setError(`❌ ${response.mensajeError || 'No se pudo obtener la nota'}`);
+        setError(`❌ ${response.mensajeError || "No se pudo obtener la nota"}`);
       }
     } catch (err) {
-      setError('❌ Error inesperado al consultar la nota');
+      setError("❌ Error inesperado al consultar la nota");
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
-      <h2>Consultar Nota de Presentación</h2>
-      <form onSubmit={handleConsultarNota}>
-        <input
-          type="number"
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 500,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" align="center" gutterBottom>
+        Consultar Nota de Presentación
+      </Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleConsultarNota}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          label="ID Presentación Examen"
           name="idPresentacion"
-          placeholder="ID Presentación Examen"
+          type="number"
           value={formData.idPresentacion}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <input
-          type="number"
+
+        <TextField
+          label="ID Alumno"
           name="idAlumno"
-          placeholder="ID Alumno"
+          type="number"
           value={formData.idAlumno}
           onChange={handleChange}
           required
+          fullWidth
         />
-        <button type="submit">Consultar</button>
-      </form>
+
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          Consultar
+        </Button>
+      </Box>
 
       {nota !== null && (
-        <p style={{ marginTop: '1rem', color: 'green' }}>
+        <Alert severity="success" sx={{ mt: 2 }}>
           <strong>Nota:</strong> {nota}
-        </p>
+        </Alert>
       )}
 
       {error && (
-        <p style={{ marginTop: '1rem', color: 'red' }}>
+        <Alert severity="error" sx={{ mt: 2 }}>
           {error}
-        </p>
+        </Alert>
       )}
-    </div>
+    </Paper>
   );
 };
 

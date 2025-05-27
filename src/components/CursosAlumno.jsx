@@ -1,52 +1,97 @@
-// components/CursosAlumno.jsx
-import React, { useState } from 'react';
-import { getCursosAlumno } from '../services/ApiServices';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Alert,
+} from "@mui/material";
+import { getCursosAlumno } from "../services/ApiServices";
 
 const CursosAlumno = () => {
-  const [id, setId] = useState('');
-  const [rol, setRol] = useState('');
+  const [id, setId] = useState("");
+  const [rol, setRol] = useState("");
   const [cursos, setCursos] = useState([]);
+  const [error, setError] = useState("");
 
   const handleBuscarCursos = async (e) => {
-    e.preventDefault(); // Evita que el formulario recargue la página
-    const response = await getCursosAlumno(id, rol);
-    setCursos(response.respuesta || []); // Corregido: acceder directamente a `respuesta`
+    e.preventDefault();
+    setError("");
+    setCursos([]);
+
+    try {
+      const response = await getCursosAlumno(id, rol);
+      setCursos(response.respuesta || []);
+    } catch (err) {
+      setError("❌ Error al obtener cursos.");
+    }
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '2rem auto' }}>
-      <h2>Consultar Cursos</h2>
-      <form onSubmit={handleBuscarCursos}>
-        <input
-          type="text"
-          placeholder="ID"
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Consultar Cursos
+      </Typography>
+
+      <Box
+        component="form"
+        onSubmit={handleBuscarCursos}
+        sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}
+      >
+        <TextField
+          label="ID"
           value={id}
           onChange={(e) => setId(e.target.value)}
           required
+          fullWidth
         />
-        <input
-          type="text"
-          placeholder="Rol"
+        <TextField
+          label="Rol"
           value={rol}
           onChange={(e) => setRol(e.target.value)}
           required
+          fullWidth
         />
-        <button type="submit">Buscar Cursos</button>
-      </form>
+        <Button variant="contained" color="primary" type="submit">
+          Buscar Cursos
+        </Button>
+      </Box>
+
+      {error && <Alert severity="error">{error}</Alert>}
 
       {cursos.length > 0 ? (
-        <ul style={{ marginTop: '1rem' }}>
+        <List>
           {cursos.map((curso, index) => (
-            <li key={index}>
-              <strong>{curso.nombre_curso || "Curso sin nombre"}</strong>
-              {curso.nombre_grupo && <> (Grupo: {curso.nombre_grupo})</>}
-            </li>
+            <ListItem key={index} divider>
+              <ListItemText
+                primary={curso.nombre_curso || "Curso sin nombre"}
+                secondary={
+                  curso.nombre_grupo
+                    ? `Grupo: ${curso.nombre_grupo}`
+                    : "Sin grupo asignado"
+                }
+              />
+            </ListItem>
           ))}
-        </ul>
+        </List>
       ) : (
-        <p style={{ marginTop: '1rem' }}>No hay cursos para mostrar.</p>
+        <Typography align="center" color="text.secondary">
+          No hay cursos para mostrar.
+        </Typography>
       )}
-    </div>
+    </Paper>
   );
 };
 

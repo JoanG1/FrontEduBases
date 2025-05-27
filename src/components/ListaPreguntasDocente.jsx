@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  Paper,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { obtenerPreguntasDocente } from "../services/ApiServices";
 
 const ListaPreguntasDocente = () => {
@@ -15,45 +27,81 @@ const ListaPreguntasDocente = () => {
 
     try {
       const resultado = await obtenerPreguntasDocente(idDocente);
-      setPreguntas(resultado);
+      setPreguntas(resultado || []);
       setError("");
     } catch (err) {
-      setError(err.toString());
+      setError("❌ " + err.toString());
       setPreguntas([]);
     }
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '2rem auto' }}>
-      <h2>Preguntas del Docente</h2>
+    <Paper
+      elevation={3}
+      sx={{
+        maxWidth: 600,
+        margin: "2rem auto",
+        padding: 4,
+        borderRadius: 3,
+      }}
+    >
+      <Typography variant="h5" gutterBottom align="center">
+        Preguntas del Docente
+      </Typography>
 
-      <input
-        type="text"
-        placeholder="ID del docente"
-        value={idDocente}
-        onChange={(e) => setIdDocente(e.target.value)}
-        style={{ marginBottom: '1rem', padding: '0.5rem', width: '100%' }}
-      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          mt: 2,
+        }}
+      >
+        <TextField
+          label="ID del Docente"
+          value={idDocente}
+          onChange={(e) => setIdDocente(e.target.value)}
+          fullWidth
+        />
 
-      <button onClick={cargarPreguntas} style={{ marginBottom: '1rem' }}>
-        Cargar preguntas
-      </button>
+        <Button variant="contained" onClick={cargarPreguntas} fullWidth>
+          Cargar Preguntas
+        </Button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && (
+          <Alert severity="error">
+            {error}
+          </Alert>
+        )}
 
-      {preguntas.length > 0 ? (
-        <ul>
-          {preguntas.map((p) => (
-            <li key={p.id_pregunta}>
-              <strong>{p.enunciado}</strong> <br />
-              Tipo: {p.tipo_pregunta} | Pública: {p.es_publica === "S" ? "Sí" : "No"}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        !error && <p>No hay preguntas disponibles.</p>
-      )}
-    </div>
+        {!error && preguntas.length === 0 && (
+          <Typography variant="body2" color="text.secondary" align="center">
+            No hay preguntas disponibles.
+          </Typography>
+        )}
+
+        {preguntas.length > 0 && (
+          <List>
+            {preguntas.map((p) => (
+              <React.Fragment key={p.id_pregunta}>
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    primary={<strong>{p.enunciado}</strong>}
+                    secondary={
+                      <>
+                        Tipo: {p.tipo_pregunta} <br />
+                        Pública: {p.es_publica === "S" ? "Sí" : "No"}
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            ))}
+          </List>
+        )}
+      </Box>
+    </Paper>
   );
 };
 
