@@ -1,16 +1,17 @@
-// components/FormPregunta.jsx
 import React, { useState } from 'react';
 import { guardarPregunta } from '../services/ApiServices';
 
 const FormPregunta = () => {
   const [pregunta, setPregunta] = useState({
     enunciado: '',
-    es_publica: '1',
-    tipo_pregunta: '',
+    es_publica: 'S',
+    tipo_pregunta: 'SELECCION_MULTIPLE',
     id_tema: '',
     id_docente: '',
   });
+
   const [mensaje, setMensaje] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setPregunta({ ...pregunta, [e.target.name]: e.target.value });
@@ -18,15 +19,27 @@ const FormPregunta = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje(null);
+    setError(null);
+
     const preguntaDTO = {
       ...pregunta,
-      es_publica: pregunta.es_publica === '1' ? '1' : '0',
+      es_publica: pregunta.es_publica === 'S' ? 'S' : 'N',
       id_tema: parseInt(pregunta.id_tema),
       id_docente: parseInt(pregunta.id_docente),
     };
 
-    //const response = await guardarPregunta(preguntaDTO);
-    //setMensaje(response.data || response.mensaje);
+    try {
+      const response = await guardarPregunta(preguntaDTO);
+
+      if (!response.error) {
+        setMensaje(`✅ ${response.respuesta}`);
+      } else {
+        setError(`❌ ${response.mensajeError || 'No se pudo guardar la pregunta'}`);
+      }
+    } catch (err) {
+      setError('❌ Error inesperado al guardar la pregunta');
+    }
   };
 
   return (
@@ -42,17 +55,19 @@ const FormPregunta = () => {
           required
         />
         <select name="es_publica" value={pregunta.es_publica} onChange={handleChange}>
-          <option value="1">Pública</option>
-          <option value="0">Privada</option>
+          <option value="S">Pública</option>
+          <option value="N">Privada</option>
         </select>
-        <input
-          type="text"
+        <select
           name="tipo_pregunta"
-          placeholder="Tipo de Pregunta"
           value={pregunta.tipo_pregunta}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="SELECCION_MULTIPLE">Selección Múltiple</option>
+          <option value="VERDADERO_FALSO">Verdadero/Falso</option>
+          <option value="ABIERTA">Abierta</option>
+        </select>
         <input
           type="number"
           name="id_tema"
@@ -72,7 +87,8 @@ const FormPregunta = () => {
         <button type="submit">Guardar Pregunta</button>
       </form>
 
-      {mensaje && <p style={{ marginTop: '1rem' }}>{mensaje}</p>}
+      {mensaje && <p style={{ color: 'green', marginTop: '1rem' }}>{mensaje}</p>}
+      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
     </div>
   );
 };
