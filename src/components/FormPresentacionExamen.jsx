@@ -175,7 +175,7 @@ const FormPresentacionExamen = () => {
               <Box key={pregunta.idPregunta}>
                 <ListItem>
                   <ListItemText
-                    primary={`(${pregunta.tipoPregunta}) ${pregunta.enunciado}`}
+                    primary={`(${pregunta.idPregunta}) ${pregunta.enunciado}`}
                   />
                 </ListItem>
                 {pregunta.respuestas && pregunta.respuestas.length > 0 && (
